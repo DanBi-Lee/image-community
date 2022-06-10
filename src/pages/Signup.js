@@ -54,7 +54,7 @@ const Signup = (props) => {
           <Grid padding="16px">
             <Input
               id="user_password_check"
-              type="password-check"
+              type="password"
               label="비밀번호 확인"
               placeholder="비밀번호를 다시 입력하세요."
               onChange={onChange}
