@@ -1,17 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { deleteCookie, getCookie } from "./Cookie";
 
 const Header = (props) => {
-  const { is_login } = props;
+  const [isLogin, setIsLogin] = useState(false);
+
+  useEffect(()=>{
+    const cookie = getCookie("id");
+    console.log(cookie);
+    if(cookie){
+      setIsLogin(true);
+    }else{
+      setIsLogin(false);
+    }
+  }, [setIsLogin])
+
+  const logout = () => {
+    deleteCookie("id");
+    setIsLogin(false);
+  }
+
   return (
     <HeaderBox>
       <LogoBox>home</LogoBox>
-      {is_login ? (
+      {isLogin ? (
         <>
           <div>내정보</div>
           <div>알림</div>
-          <div>로그아웃</div>
+          <button onClick={logout}>로그아웃</button>
         </>
       ) : (
         <>
@@ -21,10 +38,6 @@ const Header = (props) => {
       )}
     </HeaderBox>
   );
-};
-
-Header.defaultProps = {
-  is_login: false,
 };
 
 const HeaderBox = styled.header`
