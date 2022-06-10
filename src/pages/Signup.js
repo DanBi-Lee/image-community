@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import { Grid } from "../elements";
-import Button from "../elements/Button";
-import Input from "../elements/Input";
+import { Grid, Button, Input } from "../elements";
 import Header from "../shared/Header";
 
 const defaultData = {
