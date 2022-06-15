@@ -1,30 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { deleteCookie, getCookie } from "./Cookie";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { actionsCreators as userActions } from "../redux/modules/user";
 
 const Header = (props) => {
-  const [isLogin, setIsLogin] = useState(false);
-
-  useEffect(()=>{
-    const cookie = getCookie("id");
-    console.log(cookie);
-    if(cookie){
-      setIsLogin(true);
-    }else{
-      setIsLogin(false);
-    }
-  }, [setIsLogin])
+  const dispatch = useDispatch();
+  const is_login = useSelector(state=> state.user.is_login);
 
   const logout = () => {
-    deleteCookie("id");
-    setIsLogin(false);
+    dispatch(userActions.logOut());
   }
 
   return (
     <HeaderBox>
       <LogoBox>home</LogoBox>
-      {isLogin ? (
+      {is_login ? (
         <>
           <div>내정보</div>
           <div>알림</div>

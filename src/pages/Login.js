@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Grid, Button, Input } from "../elements";
-import { getCookie, setCookie } from "../shared/Cookie";
+import { getCookie } from "../shared/Cookie";
 import Header from "../shared/Header";
+import { useDispatch } from "react-redux";
+import { actionsCreators as userActions } from "../redux/modules/user";
+import { useNavigate } from "react-router-dom";
 
 const defaultData = {
   user_id: "",
@@ -9,16 +12,17 @@ const defaultData = {
 };
 
 const Login = (props) => {
+  
+  const dispatch = useDispatch();
   const [loginData, setLoginData] = useState(defaultData);
   const onChange = (event) => {
     const _target = event.target;
     setLoginData((prev) => ({ ...prev, [_target.name]: _target.value }));
   };
+  const navigate = useNavigate();
 
   const login = () => {
-    setCookie('id', loginData.user_id, 3);
-    setCookie('password', loginData.user_password, 3);
-    alert("로그인 되었습니다.");
+    dispatch(userActions.loginAction(loginData.user_id, navigate));
   }
 
   const onClick = e => {

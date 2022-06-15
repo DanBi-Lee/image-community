@@ -1,9 +1,8 @@
-import { combineReducers, applyMiddleware, compose } from "redux";
+import {  combineReducers } from "redux";
 import { configureStore } from "@reduxjs/toolkit";
 import thunk from "redux-thunk";
 import { createBrowserHistory } from "history";
 import { connectRouter } from "connected-react-router";
-
 import User from "./modules/user";
 
 export const history = createBrowserHistory();
@@ -12,7 +11,6 @@ const rootReducer = combineReducers({
   user: User,
   router : connectRouter(history)
 });
-
 const middlewares = [thunk.withExtraArgument({history:history})];
 
 const env = process.env.NODE_ENV;
@@ -22,17 +20,6 @@ if(env === "development") {
   middlewares.push(logger);
 }
 
-const composeEnhancers =
-  typeof window === "object" && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-        // Specify extension’s options like name, actionsBlacklist, actionsCreators, serialize...
-      })
-    : compose;
-
-const enhancer = composeEnhancers(
-  applyMiddleware(...middlewares)
-);
-
-let store = (initialStore) => configureStore(rootReducer, enhancer);
+let store = (initialStore) => configureStore({reducer:rootReducer, middleware: middlewares,  devTools: process.env.NODE_ENV !== 'production',});
 
 export default store();
