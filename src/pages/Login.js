@@ -3,7 +3,7 @@ import { Grid, Button, Input } from "../elements";
 import { getCookie } from "../shared/Cookie";
 import Header from "../shared/Header";
 import { useDispatch } from "react-redux";
-import { actionsCreators as userActions } from "../redux/modules/user";
+import { actionCreators as userActions } from "../redux/modules/user";
 import { useNavigate } from "react-router-dom";
 
 const defaultData = {
@@ -12,7 +12,6 @@ const defaultData = {
 };
 
 const Login = (props) => {
-  
   const dispatch = useDispatch();
   const [loginData, setLoginData] = useState(defaultData);
   const onChange = (event) => {
@@ -22,30 +21,32 @@ const Login = (props) => {
   const navigate = useNavigate();
 
   const login = () => {
-    dispatch(userActions.loginAction(loginData.user_id, navigate));
-  }
+    dispatch(
+      userActions.loginFB(loginData.user_id, loginData.user_password, navigate)
+    );
+  };
 
-  const onClick = e => {
+  const onClick = (e) => {
     e.preventDefault();
     login();
-  }
+  };
 
   const setData = (key, value) => {
-    if(!value){
+    if (!value) {
       return;
     }
-    setLoginData(prev=>({
+    setLoginData((prev) => ({
       ...prev,
-      [key] : value,
+      [key]: value,
     }));
-  }
+  };
 
-  useEffect(()=>{
-    const id = getCookie('id');
-    const password = getCookie('password');
+  useEffect(() => {
+    const id = getCookie("id");
+    const password = getCookie("password");
 
-    setData('user_id', id);
-    setData('user_password', password);
+    setData("user_id", id);
+    setData("user_password", password);
   }, []);
 
   return (

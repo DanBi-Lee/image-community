@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { Grid, Button, Input } from "../elements";
 import Header from "../shared/Header";
+import { useDispatch } from "react-redux";
+import { actionCreators as userActions } from "../redux/modules/user";
+import { useNavigate } from "react-router-dom";
 
 const defaultData = {
   user_id: "",
@@ -10,10 +13,39 @@ const defaultData = {
 };
 
 const Signup = (props) => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [signupData, setSignupData] = useState(defaultData);
+  const signup = () => {
+    console.log("회원가입");
+    if (
+      signupData.user_id === "" ||
+      signupData.user_name === "" ||
+      signupData.user_password === ""
+    ) {
+      return;
+    }
+
+    if (signupData.user_password !== signupData.user_password_check) {
+      return;
+    }
+
+    dispatch(
+      userActions.signupFB(
+        signupData.user_id,
+        signupData.user_password,
+        signupData.user_name,
+        navigate
+      )
+    );
+  };
   const onChange = (event) => {
     const _target = event.target;
     setSignupData((prev) => ({ ...prev, [_target.name]: _target.value }));
+  };
+  const onSignUp = (event) => {
+    event.preventDefault();
+    signup();
   };
   const verification =
     signupData.user_password === signupData.user_password_check;
@@ -62,7 +94,11 @@ const Signup = (props) => {
             />
           </Grid>
           <Grid padding="16px">
-            <Button text="회원가입하기" disabled={!verification} />
+            <Button
+              text="회원가입하기"
+              disabled={!verification}
+              onClick={onSignUp}
+            />
           </Grid>
         </form>
       </section>

@@ -3,15 +3,15 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { actionsCreators as userActions } from "../redux/modules/user";
+import { actionCreators as userActions } from "../redux/modules/user";
 
 const Header = (props) => {
   const dispatch = useDispatch();
-  const is_login = useSelector(state=> state.user.is_login);
+  const is_login = useSelector((state) => state.user.is_login);
 
   const logout = () => {
     dispatch(userActions.logOut());
-  }
+  };
 
   return (
     <HeaderBox>
