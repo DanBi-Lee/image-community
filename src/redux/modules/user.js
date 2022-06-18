@@ -6,6 +6,9 @@ import {
   createUserWithEmailAndPassword,
   updateProfile,
   signInWithEmailAndPassword,
+  setPersistence,
+  browserSessionPersistence,
+  onAuthStateChanged,
 } from "firebase/auth";
 
 // 액션 타입
@@ -36,7 +39,12 @@ const signupFB = (id, pwd, user_name, navigate) => {
         })
           .then(() => {
             dispatch(
-              setUser({ user_name: user_name, id: id, user_profile: "" })
+              setUser({
+                user_name: user_name,
+                id: id,
+                user_profile: "",
+                uid: user.uid,
+              })
             );
             navigate("/");
             console.log("페이지 이동");
@@ -57,27 +65,65 @@ const signupFB = (id, pwd, user_name, navigate) => {
 
 const loginFB = (id, pwd, navigate) => {
   return function (dispatch, getState) {
-    signInWithEmailAndPassword(auth, id, pwd)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
+    setPersistence(auth, browserSessionPersistence)
+      .then(() => {
+        // Existing and future Auth states are now persisted in the current
+        // session only. Closing the window would clear any existing state even
+        // if a user forgets to sign out.
+        // ...
+        // New sign-in will be persisted with session persistence.
+        return signInWithEmailAndPassword(auth, id, pwd)
+          .then((userCredential) => {
+            // Signed in
+            const user = userCredential.user;
 
-        dispatch(
-          setUser({
-            user_name: user.displayName,
-            id: id,
-            user_profile: "",
-            uid: user.uid,
+            dispatch(
+              setUser({
+                user_name: user.displayName,
+                id: id,
+                user_profile: "",
+                uid: user.uid,
+              })
+            );
+            navigate("/");
           })
-        );
-        navigate("/");
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+
+            console.log(errorCode, errorMessage);
+          });
       })
       .catch((error) => {
+        // Handle Errors here.
         const errorCode = error.code;
         const errorMessage = error.message;
-
-        console.log(errorCode, errorMessage);
       });
+  };
+};
+
+const loginCheckFB = () => {
+  return function (dispatch, getState) {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        if (user) {
+          dispatch(
+            setUser({
+              user_name: user.displayName,
+              user_profile: "",
+              id: user.email,
+              id: user.email,
+              uid: user.uid,
+            })
+          );
+        } else {
+          dispatch(logOut());
+        }
+      } else {
+        // User is signed out
+        // ...
+      }
+    });
   };
 };
 
@@ -107,6 +153,7 @@ const actionCreators = {
   getUser,
   signupFB,
   loginFB,
+  loginCheckFB,
 };
 
 export { actionCreators };

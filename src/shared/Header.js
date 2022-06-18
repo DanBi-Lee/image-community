@@ -9,6 +9,9 @@ const Header = (props) => {
   const dispatch = useDispatch();
   const is_login = useSelector((state) => state.user.is_login);
 
+  const _session_key = `firebase:authUser:${process.env.REACT_APP_API_KEY}:[DEFAULT]`;
+  const is_session = sessionStorage.getItem(_session_key) ? true : false;
+
   const logout = () => {
     dispatch(userActions.logOut());
   };
@@ -16,7 +19,7 @@ const Header = (props) => {
   return (
     <HeaderBox>
       <LogoBox>home</LogoBox>
-      {is_login ? (
+      {is_login && is_session ? (
         <>
           <div>내정보</div>
           <div>알림</div>
