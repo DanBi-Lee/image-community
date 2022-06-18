@@ -2,7 +2,11 @@ import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 import { setCookie, deleteCookie } from "../../shared/Cookie";
 import { auth } from "../../shared/firebase";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  updateProfile,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 
 // 액션 타입
 const LOG_OUT = "LOG_OUT";
@@ -20,8 +24,7 @@ const initialState = {
   is_login: false,
 };
 
-// middleware actions
-
+// middleware action
 const signupFB = (id, pwd, user_name, navigate) => {
   return function (dispatch, getState) {
     createUserWithEmailAndPassword(auth, id, pwd)
@@ -52,6 +55,32 @@ const signupFB = (id, pwd, user_name, navigate) => {
   };
 };
 
+const loginFB = (id, pwd, navigate) => {
+  return function (dispatch, getState) {
+    signInWithEmailAndPassword(auth, id, pwd)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+
+        dispatch(
+          setUser({
+            user_name: user.displayName,
+            id: id,
+            user_profile: "",
+            uid: user.uid,
+          })
+        );
+        navigate("/");
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+
+        console.log(errorCode, errorMessage);
+      });
+  };
+};
+
 // 리듀서
 export default handleActions(
   {
@@ -77,6 +106,7 @@ const actionCreators = {
   logOut,
   getUser,
   signupFB,
+  loginFB,
 };
 
 export { actionCreators };
