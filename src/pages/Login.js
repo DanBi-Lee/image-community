@@ -5,6 +5,7 @@ import Header from "../shared/Header";
 import { useDispatch } from "react-redux";
 import { actionCreators as userActions } from "../redux/modules/user";
 import { useNavigate } from "react-router-dom";
+import { emailValidation } from "../shared/validator";
 
 const defaultData = {
   user_id: "",
@@ -41,6 +42,8 @@ const Login = (props) => {
     }));
   };
 
+  const isValid = emailValidation(defaultData.user_id);
+
   useEffect(() => {
     const id = getCookie("id");
     const password = getCookie("password");
@@ -74,7 +77,7 @@ const Login = (props) => {
             />
           </Grid>
           <Grid padding="16px">
-            <Button text="로그인하기" onClick={onClick} />
+            <Button text="로그인하기" onClick={onClick} disabled={!isValid} />
           </Grid>
         </form>
       </section>
