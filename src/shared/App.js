@@ -7,8 +7,11 @@ import Signup from "../pages/Signup";
 import { actionCreators as userActions } from "../redux/modules/user";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
+import usePermit from "./usePermit";
+import { Button } from "../elements";
 
 function App() {
+  const { isLogin } = usePermit();
   const dispatch = useDispatch();
   const _session_key = `firebase:authUser:${process.env.REACT_APP_API_KEY}:[DEFAULT]`;
   const is_session = sessionStorage.getItem(_session_key) ? true : false;
@@ -27,6 +30,11 @@ function App() {
         <Route path="/login" element={<Login />}></Route>
         <Route path="/signup" element={<Signup />}></Route>
       </Routes>
+      {isLogin && (
+        <Button is_float={true} text="+">
+          +
+        </Button>
+      )}
     </BrowserRouter>
   );
 }
