@@ -1,25 +1,24 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { actionCreators as userActions } from "../redux/modules/user";
+import { useNavigate } from "react-router-dom";
+import usePermit from "./usePermit";
 
 const Header = (props) => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const is_login = useSelector((state) => state.user.is_login);
-
-  const _session_key = `firebase:authUser:${process.env.REACT_APP_API_KEY}:[DEFAULT]`;
-  const is_session = sessionStorage.getItem(_session_key) ? true : false;
 
   const logout = () => {
-    dispatch(userActions.logOut());
+    dispatch(userActions.logoutFB(navigate));
   };
+  const { isLogin } = usePermit();
 
   return (
     <HeaderBox>
       <LogoBox>home</LogoBox>
-      {is_login && is_session ? (
+      {isLogin ? (
         <>
           <div>내정보</div>
           <div>알림</div>

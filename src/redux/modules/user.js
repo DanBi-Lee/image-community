@@ -9,6 +9,7 @@ import {
   setPersistence,
   browserSessionPersistence,
   onAuthStateChanged,
+  signOut,
 } from "firebase/auth";
 
 // 액션 타입
@@ -98,6 +99,7 @@ const loginFB = (id, pwd, navigate) => {
         // Handle Errors here.
         const errorCode = error.code;
         const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
       });
   };
 };
@@ -112,7 +114,6 @@ const loginCheckFB = () => {
               user_name: user.displayName,
               user_profile: "",
               id: user.email,
-              id: user.email,
               uid: user.uid,
             })
           );
@@ -123,6 +124,15 @@ const loginCheckFB = () => {
         // User is signed out
         // ...
       }
+    });
+  };
+};
+
+const logoutFB = (navigate) => {
+  return function (dispatch) {
+    signOut(auth).then(() => {
+      dispatch(logOut());
+      navigate("/", { replace: true });
     });
   };
 };
@@ -149,11 +159,11 @@ export default handleActions(
 
 // action creator export
 const actionCreators = {
-  logOut,
   getUser,
   signupFB,
   loginFB,
   loginCheckFB,
+  logoutFB,
 };
 
 export { actionCreators };
