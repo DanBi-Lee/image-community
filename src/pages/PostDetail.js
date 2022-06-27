@@ -1,4 +1,5 @@
 import Comment from "../components/Comment";
+import CommentList from "../components/CommentList";
 import CommentWrite from "../components/CommentWrite";
 import Post from "../components/Post";
 import { Grid } from "../elements";
@@ -12,13 +13,13 @@ function PostDetail() {
       <Grid padding="16px">
         <CommentWrite />
       </Grid>
-      <section>
+      <CommentList>
         <Comment />
         <Comment />
         <Comment />
         <Comment />
         <Comment />
-      </section>
+      </CommentList>
     </>
   );
 }

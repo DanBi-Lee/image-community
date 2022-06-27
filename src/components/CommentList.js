@@ -1,11 +1,5 @@
-import Comment from "./Comment";
-
-function CommentList() {
-  return (
-    <>
-      <Comment />
-    </>
-  );
+function CommentList({ children }) {
+  return <div>{children}</div>;
 }
 
 export default CommentList;
