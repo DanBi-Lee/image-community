@@ -46,12 +46,13 @@ const Signup = (props) => {
   };
   const onSignUp = (event) => {
     event.preventDefault();
+    console.log("회원가입");
     signup();
   };
 
   const passwordIsValid =
     signupData.user_password === signupData.user_password_check;
-  const isValid = passwordIsValid && emailValidation(defaultData.user_id);
+  const isValid = passwordIsValid && emailValidation(signupData.user_id);
 
   return (
     <>

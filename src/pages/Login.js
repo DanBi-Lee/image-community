@@ -22,6 +22,7 @@ const Login = (props) => {
   const navigate = useNavigate();
 
   const login = () => {
+    console.log("로그인!");
     dispatch(
       userActions.loginFB(loginData.user_id, loginData.user_password, navigate)
     );
@@ -42,7 +43,8 @@ const Login = (props) => {
     }));
   };
 
-  const isValid = emailValidation(defaultData.user_id);
+  const isValid = emailValidation(loginData.user_id);
+  console.log(isValid);
 
   useEffect(() => {
     const id = getCookie("id");
