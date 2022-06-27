@@ -9,6 +9,8 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import usePermit from "./usePermit";
 import { Button } from "../elements";
+import PostWrite from "../pages/PostWrite";
+import PostDetail from "../pages/PostDetail";
 
 function App() {
   const { isLogin } = usePermit();
@@ -29,6 +31,8 @@ function App() {
         <Route path="/" element={<PostList />}></Route>
         <Route path="/login" element={<Login />}></Route>
         <Route path="/signup" element={<Signup />}></Route>
+        <Route path="/write" element={<PostWrite />}></Route>
+        <Route path="/detail" element={<PostDetail />}></Route>
       </Routes>
       {isLogin && (
         <Button is_float={true} text="+">

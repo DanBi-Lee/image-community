@@ -4,6 +4,7 @@ import Header from "../shared/Header";
 import { useDispatch } from "react-redux";
 import { actionCreators as userActions } from "../redux/modules/user";
 import { useNavigate } from "react-router-dom";
+import { emailValidation } from "../shared/validator";
 
 const defaultData = {
   user_id: "",
@@ -45,10 +46,13 @@ const Signup = (props) => {
   };
   const onSignUp = (event) => {
     event.preventDefault();
+    console.log("회원가입");
     signup();
   };
-  const verification =
+
+  const passwordIsValid =
     signupData.user_password === signupData.user_password_check;
+  const isValid = passwordIsValid && emailValidation(signupData.user_id);
 
   return (
     <>
@@ -96,7 +100,7 @@ const Signup = (props) => {
           <Grid padding="16px">
             <Button
               text="회원가입하기"
-              disabled={!verification}
+              disabled={!isValid}
               onClick={onSignUp}
             />
           </Grid>

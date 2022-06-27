@@ -5,6 +5,7 @@ import Header from "../shared/Header";
 import { useDispatch } from "react-redux";
 import { actionCreators as userActions } from "../redux/modules/user";
 import { useNavigate } from "react-router-dom";
+import { emailValidation } from "../shared/validator";
 
 const defaultData = {
   user_id: "",
@@ -21,6 +22,7 @@ const Login = (props) => {
   const navigate = useNavigate();
 
   const login = () => {
+    console.log("로그인!");
     dispatch(
       userActions.loginFB(loginData.user_id, loginData.user_password, navigate)
     );
@@ -40,6 +42,9 @@ const Login = (props) => {
       [key]: value,
     }));
   };
+
+  const isValid = emailValidation(loginData.user_id);
+  console.log(isValid);
 
   useEffect(() => {
     const id = getCookie("id");
@@ -74,7 +79,7 @@ const Login = (props) => {
             />
           </Grid>
           <Grid padding="16px">
-            <Button text="로그인하기" onClick={onClick} />
+            <Button text="로그인하기" onClick={onClick} disabled={!isValid} />
           </Grid>
         </form>
       </section>
