@@ -40,11 +40,12 @@ function PostWrite() {
           <Image shape="rectangle" src={src} />
         </Grid>
         <Grid padding="16px">
-          <label htmlFor="">게시글 내용</label>
+          <label htmlFor="content">게시글 내용</label>
           <textarea
             id="content"
             value={content}
             onChange={addContent}
+            name="content"
           ></textarea>
         </Grid>
         <Grid padding="16px">
